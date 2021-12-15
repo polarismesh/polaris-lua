@@ -1,4 +1,4 @@
-# Polaris Lua based on C++
+# Polaris Lua
 
 [中文文档](./README-zh.md)
 
@@ -37,3 +37,4 @@ Based on the existing C++ sdk [polaris-cpp](https://github.com/polarismesh/polar
 4. Execute `bash pre_build.sh` 
 5. Execute `make` to generate `polariswrapper.so` 
 6. 将`polariswrapper.so`，`polaris.lua` 文件上传到 OpenResty 项目的合适路径，编写自己的业务 lua 文件使用，业务lua的编写示例可参考测试用例 `test_polaris_sdk_lua_wrapper.lua`
+

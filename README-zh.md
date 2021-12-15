@@ -1,4 +1,4 @@
-# Polaris Lua based on C++
+# Polaris Lua
 
 [English Document](./README.md)
 
