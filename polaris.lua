@@ -41,6 +41,19 @@ function _M.get_server_host_port(service_namespace, service_name)
     return 0, "ok", {host=host, port=port, instance_id=instance_id}
 end
 
+-- 进行服务限流
+function _M.get_quota(service_namespace, service_name)
+    -- 查询host port
+    local result, msg, host, port, instance_id, if_reuse = polariswrapper.polaris_get_one_node(service_namespace, service_name)
+    if result ~= 0 then
+        ngx.log(ngx.ERR, "polaris_get_one_node failed, result:"..result..", msg:"..msg)
+        return result, msg
+    end
+    ngx.log(ngx.INFO, "polaris_api if_reuse:"..if_reuse)
+
+    return 0, "ok", {host=host, port=port, instance_id=instance_id}
+end
+
 -- 上报北极星调用结果
 function _M.call_report(service_namespace, service_name, instance_id, result)
     local result, msg = polariswrapper.polaris_service_call_report(service_namespace, service_name, instance_id, result)

@@ -1,0 +1,316 @@
+[2023-05-24 01:18:04,266] ERROR host = 127.0.0.1:8091, tcp connect failed, errno = 115 (tid:3655249 netclient.cpp:154)
+[2023-05-24 01:18:04,266] INFO get local ip address by connection, sdk token ip:127.0.0.1 (tid:3655249 grpc_server_connector.cpp:214)
+[2023-05-24 01:18:04,267] INFO seed server list:127.0.0.1:8091 (tid:3655249 grpc_server_connector.cpp:230)
+[2023-05-24 01:18:04,267] INFO create server connector task thread success (tid:3655249 grpc_server_connector.cpp:241)
+[2023-05-24 01:18:04,267] INFO discover stream switch to seed server[127.0.0.1:8091] (tid:3655250 grpc_server_connector.cpp:622)
+[2023-05-24 01:18:04,267] ERROR check connect to server[127.0.0.1:8091] fd[7] with errno:115 (tid:3655250 http2.cpp:623)
+[2023-05-24 01:18:04,267] INFO connect to server[127.0.0.1:8091] return 1007 (tid:3655250 grpc_server_connector.cpp:643)
+[2023-05-24 01:18:04,272] INFO service_expire_time:86400000 service_refresh_interval:86400000 (tid:3655249 local_registry.cpp:106)
+[2023-05-24 01:18:04,273] INFO cache persist config [persistDir:/home/springliao/polaris/backup/, persistMaxWriteRetry:5, persistRetryInterval:1000] (tid:3655249 cache_persist.cpp:80)
+[2023-05-24 01:18:04,468] INFO switch from server[127.0.0.1:8091] with connect timeout[200] (tid:3655250 grpc_server_connector.cpp:561)
+[2023-05-24 01:18:04,468] INFO discover stream switch to seed server[127.0.0.1:8091] (tid:3655250 grpc_server_connector.cpp:622)
+[2023-05-24 01:18:04,469] ERROR check connect to server[127.0.0.1:8091] fd[18] with errno:115 (tid:3655250 http2.cpp:623)
+[2023-05-24 01:18:04,469] INFO connect to server[127.0.0.1:8091] return 1007 (tid:3655250 grpc_server_connector.cpp:643)
+[2023-05-24 01:18:04,769] INFO switch from server[127.0.0.1:8091] with connect timeout[300] (tid:3655250 grpc_server_connector.cpp:561)
+[2023-05-24 01:18:04,769] INFO discover stream switch to seed server[127.0.0.1:8091] (tid:3655250 grpc_server_connector.cpp:622)
+[2023-05-24 01:18:04,769] ERROR check connect to server[127.0.0.1:8091] fd[7] with errno:115 (tid:3655250 http2.cpp:623)
+[2023-05-24 01:18:04,769] INFO connect to server[127.0.0.1:8091] return 1007 (tid:3655250 grpc_server_connector.cpp:643)
+[2023-05-24 01:18:05,222] INFO switch from server[127.0.0.1:8091] with connect timeout[450] (tid:3655250 grpc_server_connector.cpp:561)
+[2023-05-24 01:18:05,222] INFO discover stream switch to seed server[127.0.0.1:8091] (tid:3655250 grpc_server_connector.cpp:622)
+[2023-05-24 01:18:05,222] ERROR check connect to server[127.0.0.1:8091] fd[18] with errno:115 (tid:3655250 http2.cpp:623)
+[2023-05-24 01:18:05,222] INFO connect to server[127.0.0.1:8091] return 1007 (tid:3655250 grpc_server_connector.cpp:643)
+[2023-05-24 01:18:05,275] INFO init service router plugin[ruleBasedRouter, nearbyBasedRouter] for service[polaris_cpp/verify_default_config] success (tid:3655249 router_chain.cpp:119)
+[2023-05-24 01:18:05,280] INFO create quota manager task thread success (tid:3655249 quota_manager.cpp:133)
+[2023-05-24 01:18:05,280] INFO ===== create context[pid: 3655249 uid: "A2FDC466-A6BE-4511-82DA-B989518461DF" client: "polaris-cpp" version: "0.13.4" host_name: "VM-224-139-centos"] with config:
+global:
+  serverConnector:
+    protocol: grpc
+    addresses:
+      - 127.0.0.1:8091
+    serverSwitchInterval: 600000
+    connectTimeout: 200
+    connectTimeoutMax: 1000
+    connectTimeoutExpand: 1.5
+    messageTimeout: 1000
+    messageTimeoutMax: 10000
+    messageTimeoutExpand: 2
+    requestQueueSize: 1000
+  system:
+    discoverCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    healthCheckCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    monitorCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    metricCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    variables:
+      {}
+  api:
+    timeout: 1000
+    maxRetryTimes: 5
+    retryInterval: 100
+    bindIf: ""
+    bindIP: ""
+    reportInterval: 600000
+    cacheClearTime: 60000
+    location:
+      region: ""
+      zone: ""
+      campus: ""
+      enableUpdate: true
+  statReporter:
+    name: default
+    reportInterval: 60000
+  alertReporter:
+    name: default
+  serverMetric:
+    name: ""
+consumer:
+  localCache:
+    type: inmemory
+    serviceExpireTime: 86400000
+    serviceRefreshInterval: 2000
+    persistDir: $HOME/polaris/backup/
+    availableTime: 60000
+    upgradeWaitTime: 2000
+    persistMaxWriteRetry: 5
+    persistRetryInterval: 1000
+  serviceRouter:
+    enable: true
+    chain:
+      - ruleBasedRouter
+      - nearbyBasedRouter
+    plugin:
+      ruleBasedRouter:
+        enableRecoverAll: true
+        percentOfMinInstances: 0
+      nearbyBasedRouter:
+        matchLevel: zone
+        maxMatchLevel: none
+        strictNearby: false
+        enableDegradeByUnhealthyPercent: true
+        unhealthyPercentToDegrade: 100
+        enableRecoverAll: true
+  loadBalancer:
+    type: weightedRandom
+    enableDynamicWeight: false
+  healthCheck:
+    when: never
+  circuitBreaker:
+    enable: true
+    checkPeriod: 1000
+    chain:
+      - errorCount
+      - errorRate
+    plugin:
+      errorCount:
+        continuousErrorThreshold: 10
+        sleepWindow: 30000
+        requestCountAfterHalfOpen: 10
+        successCountAfterHalfOpen: 8
+        metricExpiredTime: 3600000
+      errorRate:
+        requestVolumeThreshold: 10
+        errorRateThreshold: 0.5
+        metricStatTimeWindow: 60000
+        metricNumBuckets: 12
+        sleepWindow: 30000
+        requestCountAfterHalfOpen: 10
+        successCountAfterHalfOpen: 8
+        metricExpiredTime: 3600000
+    setCircuitBreaker:
+      enable: false
+  weightAdjuster:
+    name: default
+rateLimiter:
+  enable: true
+  rateLimitCluster:
+    namespace: Polaris
+    service: polaris.limiter
+  messageTimeout: 1000
+  batchInterval: 40
+  lruSize: 0
+ cwd /data/Github/polaris-lua/test ===== (tid:3655249 context_impl.cpp:513)
+[2023-05-24 01:18:05,280] INFO init service router plugin[ruleBasedRouter, nearbyBasedRouter] for service[default/echosvr.Greeter] success (tid:3655249 router_chain.cpp:119)
+[2023-05-24 01:18:05,280] INFO register Instances event handler for service[default/echosvr.Greeter] (tid:3655249 grpc_server_connector.cpp:266)
+[2023-05-24 01:18:05,280] INFO load Instances data with notify for service[default/echosvr.Greeter] (tid:3655249 local_registry.cpp:352)
+[2023-05-24 01:18:05,280] INFO register RouteRule event handler for service[default/echosvr.Greeter] (tid:3655249 grpc_server_connector.cpp:266)
+[2023-05-24 01:18:05,280] INFO load RouteRule data with notify for service[default/echosvr.Greeter] (tid:3655249 local_registry.cpp:352)
+[2023-05-24 01:18:05,898] INFO switch from server[127.0.0.1:8091] with connect timeout[675] (tid:3655250 grpc_server_connector.cpp:561)
+[2023-05-24 01:18:05,898] INFO discover stream switch to seed server[127.0.0.1:8091] (tid:3655250 grpc_server_connector.cpp:622)
+[2023-05-24 01:18:05,899] ERROR check connect to server[127.0.0.1:8091] fd[7] with errno:115 (tid:3655250 http2.cpp:623)
+[2023-05-24 01:18:05,899] INFO connect to server[127.0.0.1:8091] return 1007 (tid:3655250 grpc_server_connector.cpp:643)
+[2023-05-24 01:18:06,281] ERROR GetOneInstance prepare route info for service[default/echosvr.Greeter] with error:1004-request timetout (tid:3655249 consumer_api.cpp:256)
+[2023-05-24 01:20:01,660] INFO get local ip address by connection, sdk token ip:9.135.224.139 (tid:3655823 grpc_server_connector.cpp:214)
+[2023-05-24 01:20:01,661] INFO seed server list:119.91.66.223:8091 (tid:3655823 grpc_server_connector.cpp:230)
+[2023-05-24 01:20:01,661] INFO create server connector task thread success (tid:3655823 grpc_server_connector.cpp:241)
+[2023-05-24 01:20:01,661] INFO discover stream switch to seed server[119.91.66.223:8091] (tid:3655832 grpc_server_connector.cpp:622)
+[2023-05-24 01:20:01,662] INFO connect to server[119.91.66.223:8091] used[0], send 0 pending discover request (tid:3655832 grpc_server_connector.cpp:659)
+[2023-05-24 01:20:01,666] INFO service_expire_time:86400000 service_refresh_interval:86400000 (tid:3655823 local_registry.cpp:106)
+[2023-05-24 01:20:01,667] INFO cache persist config [persistDir:/home/springliao/polaris/backup/, persistMaxWriteRetry:5, persistRetryInterval:1000] (tid:3655823 cache_persist.cpp:80)
+[2023-05-24 01:20:02,670] INFO init service router plugin[ruleBasedRouter, nearbyBasedRouter] for service[polaris_cpp/verify_default_config] success (tid:3655823 router_chain.cpp:119)
+[2023-05-24 01:20:02,675] INFO create quota manager task thread success (tid:3655823 quota_manager.cpp:133)
+[2023-05-24 01:20:02,675] INFO ===== create context[pid: 3655823 uid: "4AEB5FED-B078-4E48-BB11-3C7BF07E8CFF" client: "polaris-cpp" version: "0.13.4" host_name: "VM-224-139-centos"] with config:
+global:
+  serverConnector:
+    protocol: grpc
+    addresses:
+      - 119.91.66.223:8091
+    serverSwitchInterval: 600000
+    connectTimeout: 200
+    connectTimeoutMax: 1000
+    connectTimeoutExpand: 1.5
+    messageTimeout: 1000
+    messageTimeoutMax: 10000
+    messageTimeoutExpand: 2
+    requestQueueSize: 1000
+  system:
+    discoverCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    healthCheckCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    monitorCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    metricCluster:
+      namespace: Polaris
+      service: ""
+      refreshInterval: 600000
+    variables:
+      {}
+  api:
+    timeout: 1000
+    maxRetryTimes: 5
+    retryInterval: 100
+    bindIf: ""
+    bindIP: ""
+    reportInterval: 600000
+    cacheClearTime: 60000
+    location:
+      region: ""
+      zone: ""
+      campus: ""
+      enableUpdate: true
+  statReporter:
+    name: default
+    reportInterval: 60000
+  alertReporter:
+    name: default
+  serverMetric:
+    name: ""
+consumer:
+  localCache:
+    type: inmemory
+    serviceExpireTime: 86400000
+    serviceRefreshInterval: 2000
+    persistDir: $HOME/polaris/backup/
+    availableTime: 60000
+    upgradeWaitTime: 2000
+    persistMaxWriteRetry: 5
+    persistRetryInterval: 1000
+  serviceRouter:
+    enable: true
+    chain:
+      - ruleBasedRouter
+      - nearbyBasedRouter
+    plugin:
+      ruleBasedRouter:
+        enableRecoverAll: true
+        percentOfMinInstances: 0
+      nearbyBasedRouter:
+        matchLevel: zone
+        maxMatchLevel: none
+        strictNearby: false
+        enableDegradeByUnhealthyPercent: true
+        unhealthyPercentToDegrade: 100
+        enableRecoverAll: true
+  loadBalancer:
+    type: weightedRandom
+    enableDynamicWeight: false
+  healthCheck:
+    when: never
+  circuitBreaker:
+    enable: true
+    checkPeriod: 1000
+    chain:
+      - errorCount
+      - errorRate
+    plugin:
+      errorCount:
+        continuousErrorThreshold: 10
+        sleepWindow: 30000
+        requestCountAfterHalfOpen: 10
+        successCountAfterHalfOpen: 8
+        metricExpiredTime: 3600000
+      errorRate:
+        requestVolumeThreshold: 10
+        errorRateThreshold: 0.5
+        metricStatTimeWindow: 60000
+        metricNumBuckets: 12
+        sleepWindow: 30000
+        requestCountAfterHalfOpen: 10
+        successCountAfterHalfOpen: 8
+        metricExpiredTime: 3600000
+    setCircuitBreaker:
+      enable: false
+  weightAdjuster:
+    name: default
+rateLimiter:
+  enable: true
+  rateLimitCluster:
+    namespace: Polaris
+    service: polaris.limiter
+  messageTimeout: 1000
+  batchInterval: 40
+  lruSize: 0
+ cwd /data/Github/polaris-lua/test ===== (tid:3655823 context_impl.cpp:513)
+[2023-05-24 01:20:02,675] INFO init service router plugin[ruleBasedRouter, nearbyBasedRouter] for service[default/echosvr.Greeter] success (tid:3655823 router_chain.cpp:119)
+[2023-05-24 01:20:02,675] INFO register Instances event handler for service[default/echosvr.Greeter] (tid:3655823 grpc_server_connector.cpp:266)
+[2023-05-24 01:20:02,675] INFO load Instances data with notify for service[default/echosvr.Greeter] (tid:3655823 local_registry.cpp:352)
+[2023-05-24 01:20:02,675] INFO register RouteRule event handler for service[default/echosvr.Greeter] (tid:3655823 grpc_server_connector.cpp:266)
+[2023-05-24 01:20:02,675] INFO load RouteRule data with notify for service[default/echosvr.Greeter] (tid:3655823 local_registry.cpp:352)
+[2023-05-24 01:20:02,675] INFO discover service is empty, state transive to DiscoverStreamInit (tid:3655832 grpc_server_connector.cpp:338)
+[2023-05-24 01:20:02,680] INFO update service Instances for service[default/echosvr.Greeter] (tid:3655832 grpc_server_connector.cpp:494)
+[2023-05-24 01:20:02,680] INFO update service RouteRule for service[default/echosvr.Greeter] (tid:3655832 grpc_server_connector.cpp:494)
+[2023-05-24 01:20:02,680] ERROR discover instances for service[default/echosvr.Greeter] with service not found (tid:3655823 route_info.cpp:170)
+[2023-05-24 01:20:02,680] ERROR GetOneInstance prepare route info for service[default/echosvr.Greeter] with error:1015-service not found (tid:3655823 consumer_api.cpp:256)
+[2023-05-24 01:20:09,826] INFO init service router plugin[ruleBasedRouter, nearbyBasedRouter] for service[default/echosvr.Greeter] success (tid:3655937 router_chain.cpp:119)
+[2023-05-24 01:20:09,826] INFO register Instances event handler for service[default/echosvr.Greeter] (tid:3655937 grpc_server_connector.cpp:266)
+[2023-05-24 01:20:09,826] INFO load Instances data with notify for service[default/echosvr.Greeter] (tid:3655937 local_registry.cpp:352)
+[2023-05-24 01:20:09,826] INFO register RouteRule event handler for service[default/echosvr.Greeter] (tid:3655937 grpc_server_connector.cpp:266)
+[2023-05-24 01:20:09,826] INFO load RouteRule data with notify for service[default/echosvr.Greeter] (tid:3655937 local_registry.cpp:352)
+[2023-05-24 01:20:09,826] INFO discover service is empty, state transive to DiscoverStreamInit (tid:3655938 grpc_server_connector.cpp:338)
+[2023-05-24 01:20:09,832] INFO update service Instances for service[default/echosvr.Greeter] (tid:3655938 grpc_server_connector.cpp:494)
+[2023-05-24 01:20:09,832] INFO update service RouteRule for service[default/echosvr.Greeter] (tid:3655938 grpc_server_connector.cpp:494)
+[2023-05-24 01:20:09,832] ERROR discover instances for service[default/echosvr.Greeter] with service not found (tid:3655937 route_info.cpp:170)
+[2023-05-24 01:20:09,832] ERROR GetOneInstance prepare route info for service[default/echosvr.Greeter] with error:1015-service not found (tid:3655937 consumer_api.cpp:256)
+[2023-05-24 01:20:36,710] INFO init service router plugin[ruleBasedRouter, nearbyBasedRouter] for service[default/echosvr.Greeter] success (tid:3656116 router_chain.cpp:119)
+[2023-05-24 01:20:36,710] INFO register Instances event handler for service[default/echosvr.Greeter] (tid:3656116 grpc_server_connector.cpp:266)
+[2023-05-24 01:20:36,710] INFO load Instances data with notify for service[default/echosvr.Greeter] (tid:3656116 local_registry.cpp:352)
+[2023-05-24 01:20:36,710] INFO register RouteRule event handler for service[default/echosvr.Greeter] (tid:3656116 grpc_server_connector.cpp:266)
+[2023-05-24 01:20:36,710] INFO load RouteRule data with notify for service[default/echosvr.Greeter] (tid:3656116 local_registry.cpp:352)
+[2023-05-24 01:20:36,710] INFO discover service is empty, state transive to DiscoverStreamInit (tid:3656117 grpc_server_connector.cpp:338)
+[2023-05-24 01:20:36,717] INFO update service Instances for service[default/echosvr.Greeter] (tid:3656117 grpc_server_connector.cpp:494)
+[2023-05-24 01:20:36,717] INFO update service RouteRule for service[default/echosvr.Greeter] (tid:3656117 grpc_server_connector.cpp:494)
+[2023-05-24 01:20:36,717] ERROR discover instances for service[default/echosvr.Greeter] with service not found (tid:3656116 route_info.cpp:170)
+[2023-05-24 01:20:36,717] ERROR GetOneInstance prepare route info for service[default/echosvr.Greeter] with error:1015-service not found (tid:3656116 consumer_api.cpp:256)
+[2023-05-24 01:21:11,854] INFO init service router plugin[dstMetaRouter, nearbyBasedRouter] for service[Polaris/polaris.discover] success (tid:3656359 router_chain.cpp:119)
+[2023-05-24 01:21:11,858] INFO register Instances event handler for service[Polaris/polaris.discover] (tid:3656359 grpc_server_connector.cpp:266)
+[2023-05-24 01:21:11,858] INFO load Instances data with notify for service[Polaris/polaris.discover] (tid:3656359 local_registry.cpp:352)
+[2023-05-24 01:21:11,858] INFO discover service is empty, state transive to DiscoverStreamInit (tid:3656360 grpc_server_connector.cpp:338)
+[2023-05-24 01:21:11,864] INFO update service Instances for service[Polaris/polaris.discover] (tid:3656360 grpc_server_connector.cpp:494)
+[2023-05-24 01:21:11,864] INFO init service router plugin[ruleBasedRouter, nearbyBasedRouter] for service[default/echosvr.Greeter] success (tid:3656359 router_chain.cpp:119)
