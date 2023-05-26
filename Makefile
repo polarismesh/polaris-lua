@@ -18,3 +18,6 @@ $(TARGET):$(OBJ)
 clean:
 	rm -f $(OBJ)
 	rm -f $(TARGET)
+	rm -rf polaris-cpp
+	cd third_party
+	rm -rf polaris_cpp_sdk

@@ -14,18 +14,18 @@
 #include <lauxlib.h>
 #include "polaris/polaris_api.h"
 
-#define ERR_CODE_ARGS_COUNT                         1001    // 传入参数个数有误
-#define ERR_CODE_POLARIS_API_INIT                   1002    // 北极星api初始化失败
-#define ERR_CODE_GET_POLARIS_API                    1003    // 获取北极星api错误
-#define ERR_CODE_GET_SERVICE_NAMESPACE              1004    // 解析传入参数-命名空间-失败
-#define ERR_CODE_GET_SERVICE_NAME                   1005    // 解析传入参数-服务名-失败
-#define ERR_CODE_GET_ONE_INSTANCE_REQ_NEW           1006    // 创建获取单个服务实例请求对象失败
-#define ERR_CODE_GET_ONE_INSTANCE                   1007    // 获取单个服务实例失败
-#define ERR_CODE_GET_LOG_DIR                        1008    // 解析传入参数-日志路径-失败
-#define ERR_CODE_GET_INSTANCE_ID                    1009    // 解析传入参数-服务实例ID-失败
-#define ERR_CODE_POLARIS_SERVICE_CALL_RESULT_NEW    1010    // 创建服务实例调用结果上报对象失败
-#define ERR_CODE_CALL_RET_TIMEOUT                   1011    // 获取单个服务实例超时
-#define ERR_CODE_GET_CONFIG_FILE                    1012    // 解析传入参数-sdk配置文件路径-失败
+#define ERR_CODE_ARGS_COUNT 1001                      // 传入参数个数有误
+#define ERR_CODE_POLARIS_API_INIT 1002                // 北极星api初始化失败
+#define ERR_CODE_GET_POLARIS_API 1003                 // 获取北极星api错误
+#define ERR_CODE_GET_SERVICE_NAMESPACE 1004           // 解析传入参数-命名空间-失败
+#define ERR_CODE_GET_SERVICE_NAME 1005                // 解析传入参数-服务名-失败
+#define ERR_CODE_GET_ONE_INSTANCE_REQ_NEW 1006        // 创建获取单个服务实例请求对象失败
+#define ERR_CODE_GET_ONE_INSTANCE 1007                // 获取单个服务实例失败
+#define ERR_CODE_GET_LOG_DIR 1008                     // 解析传入参数-日志路径-失败
+#define ERR_CODE_GET_INSTANCE_ID 1009                 // 解析传入参数-服务实例ID-失败
+#define ERR_CODE_POLARIS_SERVICE_CALL_RESULT_NEW 1010 // 创建服务实例调用结果上报对象失败
+#define ERR_CODE_CALL_RET_TIMEOUT 1011                // 获取单个服务实例超时
+#define ERR_CODE_GET_CONFIG_FILE 1012                 // 解析传入参数-sdk配置文件路径-失败
 
 static polaris_api *polaris_api_ptr = NULL;
 
@@ -70,7 +70,7 @@ void fill_ok_result(lua_State *l)
 }
 
 /* 从栈上解析metadata table数据并设置 */
-void set_metadata_from_stack(lua_State *l, int index, polaris_get_one_instance_req* get_one_instance_req)
+void set_metadata_from_stack(lua_State *l, int index, polaris_get_one_instance_req *get_one_instance_req)
 {
     luaL_checktype(l, index, LUA_TTABLE);
 
@@ -80,12 +80,12 @@ void set_metadata_from_stack(lua_State *l, int index, polaris_get_one_instance_r
     {
         lua_pushvalue(l, -2);
 
-        const char* key = lua_tostring(l, -1);
-        const char* value = lua_tostring(l, -2);
+        const char *key = lua_tostring(l, -1);
+        const char *value = lua_tostring(l, -2);
         printf("%s => %s\n", key, value);
 
         /* 设置 metadata */
-        polaris_get_one_instance_req_add_metadata(get_one_instance_req, key, value);
+        polaris_get_one_instance_req_add_src_service_metadata(get_one_instance_req, key, value);
         lua_pop(l, 2);
     }
 }
@@ -141,6 +141,8 @@ static int polaris_api_init(lua_State *l)
  * 1 string 命名空间
  * 2 string 服务名
  * 3 table metadata kv (可选参数)
+ * 4 string 主调服务命名空间 (可选参数，传了metadata则必填)
+ * 5 string 主调服务名 (可选参数，传了metadata则必填)
  *
  * 传出参数:
  * 1 integer result
@@ -200,10 +202,22 @@ static int polaris_get_one_node(lua_State *l)
     }
 
     /* 检查传入参数是否有metadata并在获取实例 */
-    if (lua_gettop(l) >= 3)
+    if (lua_gettop(l) >= 5)
     {
+        /* 获取主调命名空间 */
+        const char *source_namespace = lua_tostring(l, 4);
+        if (source_namespace == NULL)
+        {
+            return report_error(l, ERR_CODE_GET_SERVICE_NAMESPACE, "get source service_namespace failed");
+        }
+        /* 获取主调服务名 */
+        const char *source_service_name = lua_tostring(l, 5);
+        if (source_service_name == NULL)
+        {
+            return report_error(l, ERR_CODE_GET_SERVICE_NAMESPACE, "get source_service_name failed");
+        }
         /* 设置源服务用于匹配规则路由 */
-        polaris_get_one_instance_req_set_src_service(get_one_instance_req, service_namespace, service_name);
+        polaris_get_one_instance_req_set_src_service_key(get_one_instance_req, source_namespace, source_service_name);
 
         /* 填充匹配规则 */
         set_metadata_from_stack(l, 3, get_one_instance_req);
@@ -213,7 +227,8 @@ static int polaris_get_one_node(lua_State *l)
 
     /* 获取实例 */
     ret = polaris_api_get_one_instance(polaris_api_ptr, get_one_instance_req, &instance);
-    if (ret != 0) {
+    if (ret != 0)
+    {
         /* 转换一下错误码 */
         if (ret == POLARIS_CALL_RET_TIMEOUT)
         {
@@ -382,27 +397,31 @@ int polaris_service_call_report(lua_State *l)
     return 2;
 }
 
+static int polaris_get_quota(lua_State *l)
+{
+}
+
 /* 导出函数列表 */
 static luaL_Reg polariswrapper_libs[] =
-{
-    /* 初始化polaris_api */
-    {"polaris_api_init", polaris_api_init},
-    /* 获取一个服务实例(如当前进程已经初始化polaris_api则复用，否则生成一个polaris_api) */
-    {"polaris_get_one_node", polaris_get_one_node},
-    /* 设置北极星日志路径&级别 */
-    {"polaris_log_settings", polaris_log_settings},
-    /* 服务实例调用结果上报(如当前进程已经初始化polaris_api则复用，否则生成一个polaris_api) */
-    {"polaris_service_call_report", polaris_service_call_report},
-
-    {NULL, NULL}
-};
+    {
+        /* 初始化polaris_api */
+        {"polaris_api_init", polaris_api_init},
+        /* 获取一个服务实例(如当前进程已经初始化polaris_api则复用，否则生成一个polaris_api) */
+        {"polaris_get_one_node", polaris_get_one_node},
+        /* 设置北极星日志路径&级别 */
+        {"polaris_log_settings", polaris_log_settings},
+        /* 服务实例调用结果上报(如当前进程已经初始化polaris_api则复用，否则生成一个polaris_api) */
+        {"polaris_service_call_report", polaris_service_call_report},
+        // 限流申请访问配额
+        {"polaris_get_quota", polaris_get_quota},
+        {NULL, NULL}};
 
 /**
  * 该C库的唯一入口函数 其函数签名等同于上面的注册函数
  */
-int luaopen_polariswrapper(lua_State* l)
+int luaopen_polariswrapper(lua_State *l)
 {
-    const char* lib_name = "polariswrapper";
+    const char *lib_name = "polariswrapper";
     luaL_register(l, lib_name, polariswrapper_libs);
     return 1;
 }

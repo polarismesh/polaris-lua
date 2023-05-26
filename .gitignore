@@ -4,3 +4,4 @@ a.out
 *.so
 third_party/polaris_cpp_sdk/slib/*.a
 third_party/polaris_cpp_sdk/dlib/*.so
+logs/
